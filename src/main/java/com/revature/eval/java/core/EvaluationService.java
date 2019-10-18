@@ -30,8 +30,18 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String acronym(String phrase) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		String result = "";
+		boolean v = true;
+		for (int i = 0; i < phrase.length(); i++) {
+			if (phrase.charAt(i) == ' ' || phrase.charAt(i) == '-') {
+				v = true;
+			} else if (phrase.charAt(i) != ' ' && v == true) {
+				result += (phrase.charAt(i));
+				v = false;
+			}
+			result.toUpperCase();
+		}
+		return result;
 	}
 
 	/**
@@ -84,20 +94,32 @@ public class EvaluationService {
 		}
 
 		public boolean isEquilateral() {
-			// TODO Write an implementation for this method declaration
-			return false;
+			if (sideOne == sideTwo && sideOne == sideThree) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 		public boolean isIsosceles() {
-			// TODO Write an implementation for this method declaration
-			return false;
+			if (sideOne == sideTwo && sideOne != sideThree) {
+				return true;
+			} else if (sideOne == sideThree && sideOne != sideTwo) {
+				return true;
+			} else if (sideTwo == sideThree && sideOne != sideTwo) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 		public boolean isScalene() {
-			// TODO Write an implementation for this method declaration
-			return false;
+			if (sideOne != sideTwo && sideOne != sideThree && sideTwo != sideThree) {
+				return true;
+			} else {
+				return false;
+			}
 		}
-
 	}
 
 	/**
@@ -116,8 +138,33 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getScrabbleScore(String string) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		int result = 0;
+		String plusOne = "a,e,i,o,u,l,n,r,s,t,A, E, I, O, U, L, N, R, S, T";
+		String plusTwo = "d,g,D,G";
+		String plusThree = "b,c,m,p,B,C,M,P";
+		String plusFour = "f,h,c,w,y,F,H,C,W,Y";
+		String plusFive = "k,K";
+		String plusEight = "j,x,J,X";
+		String plusTen = "q,z,Q,Z";
+		for (int i = 0; i < string.length(); i++) {
+			String x = String.valueOf(string.charAt(i));
+			if (plusOne.indexOf(x) >= 0) {
+				result = result + 1;
+			} else if (plusTwo.indexOf(x) >= 0) {
+				result = result + 2;
+			} else if (plusThree.indexOf(x) >= 0) {
+				result = result + 3;
+			} else if (plusFour.indexOf(x) >= 0) {
+				result = result + 4;
+			} else if (plusFive.indexOf(x) >= 0) {
+				result = result + 5;
+			} else if (plusEight.indexOf(x) >= 0) {
+				result = result + 8;
+			} else if (plusTen.indexOf(x) >= 0) {
+				result = result + 10;
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -152,8 +199,14 @@ public class EvaluationService {
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
 	public String cleanPhoneNumber(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		String finalProd = null;
+		String cleanStr = string.replaceAll("[() -.]", "");
+		if (cleanStr.length() == 10) {
+			finalProd = cleanStr;
+		} else {
+			throw new IllegalArgumentException();
+		}
+		return finalProd;
 	}
 
 	/**
@@ -166,8 +219,22 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Map<String, Integer> wordCount(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		// creates a new HashMap
+		Map<String, Integer> mainHash = new HashMap<String, Integer>();
+		// creates an empty array
+		String[] tempArray;
+		// splits the string into the array
+		tempArray = string.split("\\W+");
+		for (int i = 0; i < tempArray.length; i++) {
+			if (mainHash.containsKey(tempArray[i]) == false) {
+				mainHash.put(tempArray[i], 1);
+			} else {
+				int key = mainHash.get(tempArray[i]);
+				key++;
+				mainHash.put(tempArray[i], key);
+			}
+		}
+		return mainHash;
 	}
 
 	/**
@@ -266,8 +333,29 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isArmstrongNumber(int input) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		String strOfInput = Integer.toString(input); // "10" <= 10
+		String[] strArrOfInput = strOfInput.split(""); // Splits number into a string array[1,0] <=
+		boolean armStNum = true;
+		int armStrong = 0;
+		for (int i = 0; i < strArrOfInput.length; i++) {
+			if (strArrOfInput.length > 1) {
+				for (int j = 0; j < strArrOfInput.length; j++) {
+					Double a = Double.valueOf(strArrOfInput[j]);
+					Double b = (double) strArrOfInput.length;
+					armStrong = armStrong + ((int) Math.pow(a, b));
+				}
+				if ((int) armStrong == input) {
+					armStNum = true;
+					return armStNum;
+				} else {
+					armStNum = false;
+				}
+
+			} else {
+				armStNum = true;
+			}
+		}
+		return armStNum;
 	}
 
 	/**
@@ -537,8 +625,20 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int solveWordProblem(String string) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		String strFilter = string.replace("What ", "").replace("is ", "").replace("by ", "").replace("?", "");
+		String[] newTest = strFilter.split(" ");
+		int ans = 0;
+		for (int i = 0; i < newTest.length; i++) {
+			if (newTest[i].matches("plus") == true) {
+				ans = Integer.parseInt(newTest[0]) + Integer.parseInt(newTest[2]);
+			} else if (newTest[i].matches("minus") == true) {
+				ans = Integer.parseInt(newTest[0]) - Integer.parseInt(newTest[2]);
+			} else if (newTest[i].matches("multiplied") == true) {
+				ans = Integer.parseInt(newTest[0]) * Integer.parseInt(newTest[2]);
+			} else if (newTest[i].matches("divided") == true) {
+				ans = Integer.parseInt(newTest[0]) / Integer.parseInt(newTest[2]);
+			}
+		}
+		return ans;
 	}
-
 }
