@@ -1,5 +1,15 @@
 package com.revature.eval.java.core;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
 import java.time.temporal.Temporal;
 import java.util.List;
 import java.util.Map;
@@ -521,8 +531,22 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isPangram(String string) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		Map<String, Integer> mainHash = new HashMap<String, Integer>();
+		String[] strArray;
+		String newStr = string.replaceAll("\\s+", "");
+		strArray = newStr.split("");
+		boolean isPan = true;
+		for (int i = 0; i < strArray.length; i++) {
+			if (mainHash.containsKey(strArray[i]) == false) {
+				mainHash.put(strArray[i], 1);
+			}
+		}
+		if (mainHash.size() == 26) {
+			isPan = true;
+		} else {
+			isPan = false;
+		}
+		return isPan;
 	}
 
 	/**
@@ -534,8 +558,12 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		if (given instanceof LocalDate) {
+			LocalDateTime ldt = LocalDateTime.of((LocalDate) given, LocalTime.MIN);
+			return ldt.plusSeconds(1000000000);
+		} else {
+			return ((LocalDateTime) given).plusSeconds(1000000000);
+		}
 	}
 
 	/**
@@ -552,8 +580,26 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getSumOfMultiples(int i, int[] set) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		// Given the int [] set with x length given values{y1...}
+		// As well as the parameter i
+		ArrayList<Integer> numberSet = new ArrayList<Integer>();
+		int sum = 0;
+		for (int j = 0; j < i; j++) {
+			numberSet.add(j);
+		}
+		Set<Integer> uniqueMulti = new HashSet<Integer>();
+		for (int k = 0; k < numberSet.size(); k++) {
+			for (int l = 0; l < set.length; l++) {
+				if (k % set[l] == 0) {
+					uniqueMulti.add(k);
+				}
+			}
+		}
+		Object[] sumOfAll = (Object[]) uniqueMulti.toArray();
+		for (int m = 0; m < sumOfAll.length; m++) {
+			sum = sum + (int) sumOfAll[m];
+		}
+		return sum;
 	}
 
 	/**
@@ -593,8 +639,43 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isLuhnValid(String string) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		// read through the given, if there are numbers, go to the next step
+		// if there is a character case, immediate invalid
+		boolean validId = true;
+		String strReformat = string.replace(" ", "");
+		String[] strArr = strReformat.split("");
+		int[] numbers = new int[strArr.length];
+		int[] newNums = new int[numbers.length];
+		for (int z = 0; z < strArr.length; z++) {
+			try {
+				numbers[z] = Integer.parseInt(strArr[z]);
+			} catch (NumberFormatException | NullPointerException nfe) {
+			}
+		}
+		for (int y = numbers.length - 2, w = 0; y >= 0; y -= 2, w++) {
+			newNums[w] = numbers[y];
+		}
+		for (int x = 0; x < newNums.length; x++) {
+			newNums[x] = newNums[x] * 2;
+			if (newNums[x] > 9) {
+				newNums[x] = newNums[x] - 9;
+			}
+		}
+		for (int q = numbers.length - 2, r = 0; q >= 0; q -= 2, r++) {
+			numbers[q] = newNums[r];
+		}
+		int sum = 0;
+
+		for (int s : numbers)
+			sum += s;
+		if (sum % 10 == 0) {
+			validId = true;
+		} else {
+			validId = false;
+		}
+		return validId;
+		// hugely optimizable and needs to handle having 1 as the initial digit as a
+		// edge case
 	}
 
 	/**
