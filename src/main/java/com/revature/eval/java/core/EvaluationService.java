@@ -474,8 +474,72 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String encode(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			// First get the index value of the letters in your string
+			// in comparison to the list and save them
+			// Reverse the list
+			// find the corresponding string value in the new list using saved indexes
+
+			// if string is longer than 5 spaces, separate the words into max 5 with a space
+			// in btw.
+
+			List<String> omega = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n",
+					"o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
+
+			String newStr = string.toLowerCase();
+			String simple = newStr.replace(" ", "").replace(".", "").replace(",", "");
+			String[] indexed = simple.split("");
+			int[] savedInd = new int[indexed.length];
+			String[] conversion = new String[savedInd.length];
+			StringBuilder stringBuilder = new StringBuilder();
+			for (int i = 0; i < indexed.length; i++) {
+				savedInd[i] = omega.indexOf(indexed[i]);
+				
+				//how do i keep the 123
+				
+				if (omega.indexOf(indexed[i]) == -1) {
+					savedInd[i] = Integer.parseInt(indexed[i]);
+				}
+			}
+			
+			Collections.reverse(omega);
+			
+			for (int j = 0; j < savedInd.length; j++) {
+//				System.out.println(j);
+				conversion[j] = omega.get(savedInd[j]);
+//				System.out.println(conversion[j]);
+				stringBuilder.append(conversion[j]);
+//				System.out.println(Arrays.toString(conversion));
+			}
+
+			if (stringBuilder.length() > 5 && stringBuilder.length() <= 10) {
+				stringBuilder.insert(5, " ");
+			} else if (stringBuilder.length() > 10 && stringBuilder.length() <= 15) {
+				stringBuilder.insert(5, " ");
+				stringBuilder.insert(11, " ");
+			} else if (stringBuilder.length() > 15 && stringBuilder.length() <= 20) {
+				stringBuilder.insert(5, " ");
+				stringBuilder.insert(11, " ");
+				stringBuilder.insert(17, " ");
+			} else if (stringBuilder.length() > 20 && stringBuilder.length() <= 25) {
+				stringBuilder.insert(5, " ");
+				stringBuilder.insert(11, " ");
+				stringBuilder.insert(17, " ");
+				stringBuilder.insert(23, " ");
+			} else if (stringBuilder.length() > 25 && stringBuilder.length() <= 30) {
+				stringBuilder.insert(5, " ");
+				stringBuilder.insert(11, " ");
+				stringBuilder.insert(17, " ");
+				stringBuilder.insert(23, " ");
+				stringBuilder.insert(29, " ");
+			} else if (stringBuilder.length() > 30 && stringBuilder.length() <= 35) {
+				stringBuilder.insert(5, " ");
+				stringBuilder.insert(11, " ");
+				stringBuilder.insert(17, " ");
+				stringBuilder.insert(23, " ");
+				stringBuilder.insert(29, " ");
+				stringBuilder.insert(35, " ");
+			}
+			return stringBuilder.toString();
 		}
 
 		/**
@@ -485,8 +549,34 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String decode(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			List<String> omega = Arrays.asList("z", "y", "x", "w", "v", "u", "t", "s", "r", "q", "p", "o", "n", "m",
+					"l", "k", "j", "i", "h", "g", "f", "e", "d", "c", "b", "a");
+			String newStr = string.replace(" ", "");
+			String[] indexed = newStr.split("");
+			int[] savedInd = new int[indexed.length];
+			
+			String[] conversion = new String[savedInd.length];
+			StringBuilder stringBuilder = new StringBuilder();
+			
+			for (int i = 0; i < indexed.length; i++) {
+				savedInd[i] = omega.indexOf(indexed[i]);
+				//added to another array the 123?
+				if (omega.indexOf(indexed[i]) == -1) {
+					savedInd[i] = Integer.parseInt(indexed[i]);
+				}
+			}
+			
+			Collections.reverse(omega);
+			
+			for (int j = 0; j < savedInd.length; j++) {
+//				System.out.println(j);
+				conversion[j] = omega.get(savedInd[j]);
+//				System.out.println(conversion[j]);
+				stringBuilder.append(conversion[j]);
+//				System.out.println(Arrays.toString(conversion));
+			}
+			System.out.println(stringBuilder);
+			return stringBuilder.toString();
 		}
 	}
 
@@ -513,8 +603,43 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isValidIsbn(String string) {
-		// TODO Write an implementation for this method declaration
-		return false;
+// Given the variable string, I want to:
+		// remove hyphens that it may have
+		// Check if the last index is either a number or X which represents 10
+		// Check if there are only strings that we can turn into integers
+		// If those checks pass, we plug in our numbers into our formula and modules our
+		// sum by 11
+		// If % 11 ==0, it is a valid ISBN
+		String newStr = string.replaceAll("\\W+", "");
+		String[] newTest = newStr.split("");
+		System.out.println(Arrays.toString(newTest));
+		int[] integers = new int[newTest.length];
+		boolean validation = true;
+		for (int i = 0; i < newTest.length; i++) {
+			if (Arrays.asList(newTest[i]).contains("X")) {
+				newTest[i] = "10";
+				integers[i] = Integer.parseInt(newTest[i]);
+			} else if (Arrays.asList(newTest[i]).contains("K")) {
+				validation = false;
+				return validation;
+			} else if (Arrays.asList(newTest[i]).contains("A")) {
+				validation = false;
+				return validation;
+			} else {
+				integers[i] = Integer.parseInt(newTest[i]);
+			}
+		}
+		System.out.println(Arrays.toString(integers));
+		int sum = (integers[0] * 10 + integers[1] * 9 + integers[2] * 8 + integers[3] * 7 + integers[4] * 6
+				+ integers[5] * 5 + integers[6] * 4 + integers[7] * 3 + integers[8] * 2 + integers[9] * 1);
+		System.out.println(sum);
+		if (sum % 11 == 0) {
+			validation = true;
+		} else {
+			validation = false;
+		}
+
+		return validation;
 	}
 
 	/**
