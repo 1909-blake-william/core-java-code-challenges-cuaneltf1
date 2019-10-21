@@ -286,8 +286,24 @@ public class EvaluationService {
 		private List<T> sortedList;
 
 		public int indexOf(T t) {
-			// TODO Write an implementation for this method declaration
-			return 0;
+			int locator = 0;
+			int mid = (int) Math.floor(sortedList.size()/2);
+			if(sortedList.get(mid).compareTo(t)==0) {
+				locator = mid;
+			} else if(sortedList.get(mid).compareTo(t)==-1) {//if the left is less then the right
+				for(int i =mid;i<sortedList.size();i++) {
+					if(sortedList.get(i).compareTo(t)==0) {
+						locator = i;
+					}
+				}
+			} else if(sortedList.get(mid).compareTo(t)==1) {//if the right is more then the left
+				for(int j =mid;j<sortedList.size()/2;j--) {
+					if(sortedList.get(j).compareTo(t)==0) {
+						locator = j;
+					}
+				}
+			}
+			return locator;
 		}
 
 		public BinarySearch(List<T> sortedList) {
@@ -323,8 +339,45 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String toPigLatin(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		String [] newStr = string.split("");
+		int locator = 0 ;
+		for(int i = 0; i<newStr.length;i++) {
+			if(newStr[i].equals("a")==true||newStr[i].equals("e")==true||newStr[i].equals("i")==true||newStr[i].equals("o")==true||newStr[i].equals("u")==true) {
+				System.out.println(i);
+				locator = i;
+				break;
+			}
+		}
+		StringBuilder strB= new StringBuilder(string);
+		System.out.println(strB);
+		for(int j = 0; j<strB.length();j++) {
+			if(locator == 0) {
+				strB = strB.append("ay");
+				break;
+			} else if(locator == 1) {
+				strB= strB.append(newStr[0]);
+				strB= strB.deleteCharAt(0);
+				strB = strB.append("ay");
+				break;
+			} else if(locator == 2) {
+				strB= strB.append(newStr[0]);
+				strB= strB.deleteCharAt(0);
+				strB= strB.append(newStr[1]);
+				strB= strB.deleteCharAt(0);
+				strB = strB.append("ay");
+				break;
+			}else if(locator == 3) {
+				strB= strB.append(newStr[0]);
+				strB= strB.deleteCharAt(0);
+				strB= strB.append(newStr[1]);
+				strB= strB.deleteCharAt(0);
+				strB= strB.append(newStr[2]);
+				strB= strB.deleteCharAt(0);
+				strB = strB.append("ay");
+				break;
+			}
+	}
+		return strB.toString();
 	}
 
 	/**
